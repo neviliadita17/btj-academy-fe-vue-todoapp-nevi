@@ -86,7 +86,7 @@
                   <div class="mt-1 flex items-center">
                     <span class="text-sm font-medium text-gray-500">Priority:</span>
                     <span
-                      :class="{
+                       v-bind:class="{
                         'bg-blue-500': todo.priority === 'low',
                         'bg-yellow-500': todo.priority === 'medium',
                         'bg-red-500': todo.priority === 'high',
@@ -124,7 +124,7 @@
                 <div class="mt-1 flex items-center">
                   <span class="text-sm font-medium text-gray-500">Priority:</span>
                   <span
-                    :class="{
+                    v-bind:class="{
                       'bg-blue-500': doneTodo.priority === 'low',
                       'bg-yellow-500': doneTodo.priority === 'medium',
                       'bg-red-500': doneTodo.priority === 'high',
@@ -135,6 +135,10 @@
                 </div>
               </div>
             </div>
+            <!-- Button untuk hapus done todos -->
+            <!-- <button @click="clearDoneTodos" class="px-4 py-2 rounded-md bg-blue-500 text-white">
+              Clear Done Todos
+            </button> -->
           </div>
         </div>
       </div>
