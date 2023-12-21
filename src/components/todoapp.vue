@@ -31,7 +31,7 @@
       <!-- Bagian Form -->
       <div class="p-4 bg-white rounded-md shadow-md mb-8">
         <h2 class="text-2xl font-semibold mb-4">Add Todo</h2>
-        <form @submit.prevent="addTodo">
+        <form v-on:submit="addTodo">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700">Name:</label>
@@ -61,7 +61,7 @@
           <div class="flex justify-end mt-4">
             <button
               type="submit"
-              :disabled="!newTodo.name"
+              v-bind:disabled="!newTodo.name"
               class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none -right"
             >
               Save
@@ -76,72 +76,67 @@
 
         <!-- Bagian Todo -->
         <div class="flex space-x-4">
-        <div class="w-1/2">
-          <h3 class="text-lg font-semibold mb-2">Todo</h3>
-          <div v-if="todos.length === 0" class="text-gray-500">No todos yet.</div>
-          <div v-for="todo in todos" :key="todo.id" class="bg-white p-4 mb-4 rounded-md shadow-md">
-            <div class="flex justify-between items-center mb-2">
+          <div class="w-1/2">
+            <h3 class="text-lg font-semibold mb-2">Todo</h3>
+            <div v-if="todos.length === 0" class="text-gray-500">No todos yet.</div>
+            <div v-for="todo in todos" :key="todo.id" class="bg-white p-4 mb-4 rounded-md shadow-md">
+              <div class="flex justify-between items-center mb-2">
+                <div>
+                  <p class="text-xl font-semibold">{{ todo.name }}</p>
+                  <div class="mt-1 flex items-center">
+                    <span class="text-sm font-medium text-gray-500">Priority:</span>
+                    <span
+                      :class="{
+                        'bg-blue-500': todo.priority === 'low',
+                        'bg-yellow-500': todo.priority === 'medium',
+                        'bg-red-500': todo.priority === 'high',
+                      }"
+                      class="ml-2 w-4 h-4 rounded-full inline-block"
+                    ></span>
+                    <span class="ml-2">{{ todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1) }}</span>
+                  </div>
+                </div>
+                <div class="flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
+                  <button
+                    v-on:click="deleteTodo(todo.id)"
+                    class="px-4 py-2 rounded-md bg-red-500 text-white sm:px-2 sm:py-1 md:px-3 md:py-2 lg:px-4 lg:py-2"
+                  >
+                    Delete
+                  </button>
+                  <button
+                    v-on:click="markDone(todo.id)"
+                    class="px-4 py-2 rounded-md bg-green-500 text-white sm:px-2 sm:py-1 md:px-3 md:py-2 lg:px-4 lg:py-2"
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bagian Done -->
+          <div class="w-1/2">
+            <h3 class="text-lg font-semibold mb-2">Done</h3>
+            <div v-if="doneTodos.length === 0" class="text-gray-500">No completed todos yet.</div>
+            <div v-for="doneTodo in doneTodos" :key="doneTodo.id" class="bg-white p-4 mb-4 rounded-md shadow-md">
               <div>
-                <p class="text-xl font-semibold">{{ todo.text }}</p>
+                <p class="text-xl font-semibold">{{ doneTodo.name }}</p>
                 <div class="mt-1 flex items-center">
                   <span class="text-sm font-medium text-gray-500">Priority:</span>
                   <span
                     :class="{
-                      'bg-blue-500': todo.priority === 'low',
-                      'bg-yellow-500': todo.priority === 'medium',
-                      'bg-red-500': todo.priority === 'high',
+                      'bg-blue-500': doneTodo.priority === 'low',
+                      'bg-yellow-500': doneTodo.priority === 'medium',
+                      'bg-red-500': doneTodo.priority === 'high',
                     }"
                     class="ml-2 w-4 h-4 rounded-full inline-block"
                   ></span>
-                  <span class="ml-2">{{ todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1) }}</span>
-
+                  <span class="ml-2">{{ doneTodo.priority.charAt(0).toUpperCase() + doneTodo.priority.slice(1) }}</span>
                 </div>
               </div>
-              <div class="flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
-                <button
-                  @click="deleteTodo(todo.id)"
-                  class="px-4 py-2 rounded-md bg-red-500 text-white sm:px-2 sm:py-1 md:px-3 md:py-2 lg:px-4 lg:py-2"
-                >
-                  Delete
-                </button>
-                <button
-                  @click="markDone(todo.id)"
-                  class="px-4 py-2 rounded-md bg-green-500 text-white sm:px-2 sm:py-1 md:px-3 md:py-2 lg:px-4 lg:py-2"
-                >
-                  Done
-                </button>
-              </div>
-
             </div>
           </div>
         </div>
-
-        <!-- Bagian Done -->
-        <div class="w-1/2">
-          <h3 class="text-lg font-semibold mb-2">Done</h3>
-          <div v-if="doneTodos.length === 0" class="text-gray-500">No completed todos yet.</div>
-          <div v-for="doneTodo in doneTodos" :key="doneTodo.id" class="bg-white p-4 mb-4 rounded-md shadow-md">
-            <div>
-              <p class="text-xl font-semibold">{{ doneTodo.text }}</p>
-              <div class="mt-1 flex items-center">
-                <span class="text-sm font-medium text-gray-500">Priority:</span>
-                <span
-                  :class="{
-                    'bg-blue-500': doneTodo.priority === 'low',
-                    'bg-yellow-500': doneTodo.priority === 'medium',
-                    'bg-red-500': doneTodo.priority === 'high',
-                  }"
-                  class="ml-2 w-4 h-4 rounded-full inline-block"
-                ></span>
-                <span class="ml-2">{{ doneTodo.priority.charAt(0).toUpperCase() + doneTodo.priority.slice(1) }}</span>
-              </div>
-            </div>
-            <!-- <button @click="clearDoneTodos" class="px-4 py-2 rounded-md bg-blue-500 text-white">
-              Clear Done Todos
-            </button> -->
-          </div>
-        </div>
-      </div>
       </div>
     </div>
   </div>
@@ -179,7 +174,7 @@ export default {
       if (this.newTodo.name) {
         const newTodo = {
           id: this.todos.length + 1,
-          text: this.newTodo.name,
+          name: this.newTodo.name,
           priority: this.newTodo.priority,
           completed: false,
         };
