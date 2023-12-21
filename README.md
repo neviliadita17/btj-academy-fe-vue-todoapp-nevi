@@ -98,4 +98,41 @@ Methods ini digunakan ketika pengguna menyelesaikan tugas. Dengan cara berdasark
 Berisi informasi ringkasan (summary) dari aplikasi "Todo App". Di dalamnya terdapat informasi mengenai jumlah tugas yang masih menunggu (Pending), jumlah tugas dengan prioritas rendah (Low Priority), jumlah tugas dengan prioritas sedang (Medium Priority), dan jumlah tugas dengan prioritas tinggi (High Priority). 
 
 ## Form Section
+Bagian ini adalah formulir untuk menambahkan tugas baru (todo) ke daftar. Berikut adalah penjelasan singkat dari setiap elemen dalam formulir:
+
+`<form v-on:submit="addTodo">`: Ini adalah formulir yang menggunakan directive `v-on` untuk menangani event `submit`. Ketika formulir ini disubmit, method `addTodo` akan dipanggil untuk menambahkan tugas baru
+
+`<input v-model="newTodo.name" type="text" id="name" name="name" required class="mt-1 p-2 w-full border rounded-md" />`: Ini adalah input teks untuk memasukkan nama tugas. Properti `newTodo.name` menggunakan `v-model`, sehingga nilainya akan diupdate saat pengguna memasukkan teks
+
+`<select v-model="newTodo.priority" id="priority" name="priority" class="mt-1 p-2 w-full border rounded-md">`: Ini adalah dropdown select untuk memilih tingkat prioritas tugas. Properti `newTodo.priority` ini menggunakan `v-model`, sehingga nilai prioritas dapat dipilih
+
+Tombol "Save":
+   ```html
+   <button type="submit" v-bind:disabled="!newTodo.name" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none -right">Save</button>
+   ```
+   - Tombol ini hanya dapat diklik jika `newTodo.name` memiliki nilai (tidak kosong), karena `v-bind:disabled` diatur berdasarkan kondisi ini.
+   - Ketika tombol ini diklik, formulir akan disubmit, dan method `addTodo` akan dipanggil
+
+Dengan form ini kita dapat memasukkan nama tugas dan memilih prioritasnya, kemudian menekan tombol "Save" untuk menambahkan tugas baru ke dalam daftar
+
 ## Todo List Section
+Code yang Anda berikan adalah bagian dari tampilan daftar tugas (todo list) menggunakan Vue.js dan Tailwind CSS. Berikut adalah penjelasan singkatnya:
+
+### Bagian Todo:
+   - Daftar tugas yang belum selesai (`todos`) ditampilkan di bagian kiri dari layout dan setiap tugas ditampilkan dalam elemen div dengan kelas-kelas dari Tailwind CSS.
+   - `v-if`: jika tidak ada tugas yang belum selesai, pesan "No todos yet." ditampilkan
+   - `v-fo`: untuk melakukan iterasi melalui array todos dan doneTodos dan membuat elemen untuk setiap tugas.
+     `v-on:click`: untuk menangani event klik pada tombol "Delete" dan "Done" dan memanggil method deleteTodo dan markDone untuk melakukan tindakan yang sesuai
+   - Prioritas tugas ditampilkan dengan warna latar belakang yang berbeda berdasarkan prioritas (low: biru, medium: kuning, high: merah) menggunakan
+     
+            v-bind:class="{
+             'bg-blue-500': doneTodo.priority === 'low',
+             'bg-yellow-500': doneTodo.priority === 'medium',
+             'bg-red-500': doneTodo.priority === 'high',
+             }"
+
+### Bagian Done:
+   - Daftar tugas yang sudah selesai (`doneTodos`) ditampilkan di bagian kanan dari layout dan setiap tugas yang sudah selesai ditampilkan dalam elemen div dengan kelas-kelas dari Tailwind CSS.
+   - `v-if`: Jika tidak ada tugas yang sudah selesai, pesan "No completed todos yet." ditampilkan.
+   - `v-fo`r: untuk melakukan iterasi melalui array todos dan doneTodos dan membuat elemen untuk setiap tugas.
+   - Untuk label kategori tugas juga sama dengan todo, menggunakan `v-bind:class`
