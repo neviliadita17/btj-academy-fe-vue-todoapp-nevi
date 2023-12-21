@@ -49,12 +49,12 @@ Mendefinisikan properti komputasi. Properti komputasi ini menghitung nilai berda
     methods: {
         addTodo() {
             if (this.newTodo.name) {
-                const newTodo = {
-                id: this.todos.length + 1,
-                text: this.newTodo.name,
-                priority: this.newTodo.priority,
-                completed: false,
-                };
+            const newTodo = {
+              id: this.todos.length + 1,
+              name: this.newTodo.name,
+              priority: this.newTodo.priority,
+              completed: false,
+            };
     
             this.todos.push(newTodo);
                 
